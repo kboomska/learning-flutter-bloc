@@ -1,3 +1,4 @@
+import 'package:bloc_stream_example/color_bloc.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,6 +25,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final ColorBloc _bloc = ColorBloc();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,29 +34,41 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
       ),
       body: Center(
-        child: AnimatedContainer(
-          height: 100,
-          width: 100,
-          color: Colors.red,
-          duration: const Duration(
-            milliseconds: 500,
-          ),
+        child: StreamBuilder(
+          stream: _bloc.outputStateStream,
+          initialData: Colors.red,
+          builder: (context, snapshot) {
+            return AnimatedContainer(
+              height: 100,
+              width: 100,
+              color: snapshot.data,
+              duration: const Duration(
+                milliseconds: 500,
+              ),
+            );
+          },
         ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () => _bloc.inputEventSink.add(ColorEvent.eventRed),
             backgroundColor: Colors.red,
           ),
           const SizedBox(width: 10),
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () => _bloc.inputEventSink.add(ColorEvent.eventGreen),
             backgroundColor: Colors.green,
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
   }
 }
