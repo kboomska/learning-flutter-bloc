@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:bloc_network_example/bloc/user_state.dart';
 import 'package:bloc_network_example/bloc/user_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserList extends StatelessWidget {
   const UserList({super.key});
