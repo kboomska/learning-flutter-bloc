@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +13,17 @@ class UserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<UserBloc, UserState>(
+      child: BlocConsumer<UserBloc, UserState>(
+        listener: (context, state) {
+          log(state.toString());
+          if (state is UserLoadedState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Users is loaded'),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state is UserEmptyState) {
             return const Center(
